@@ -17,3 +17,21 @@ def home(request):
         return render(request, 'myapp/home.html')
     else:
         return render(request, 'myapp/signin.html')
+
+
+@login_required(login_url='signin')
+def findbus(request):
+    context = {}
+    if request.method == 'POST':
+        source_r = request.POST.get('source')
+        dest_r = request.POST.get('destination')
+        date_r = request.POST.get('date')
+        bus_list = Bus.objects.filter(source=source_r, dest=dest_r, date=date_r)
+        if bus_list:
+            return render(request, 'myapp/list.html', locals())
+        else:
+            context["error"] = "Sorry, our Bookings are full!"
+            return render(request, 'myapp/findbus.html', context)
+    else:
+        return render(request, 'myapp/findbus.html')
+
