@@ -145,3 +145,11 @@ def signin(request):
     else:
         context["error"] = "Please Login to Proceed"
         return render(request, 'myapp/signin.html', context)
+
+
+def signout(request):
+    context = {}
+    logout(request)
+    context['error'] = "You have successfully logged out"
+    return render(request, 'myapp/signin.html', context)
+
