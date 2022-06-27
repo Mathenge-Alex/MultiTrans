@@ -125,3 +125,23 @@ def signup(request):
         return render(request, 'myapp/signup.html', context)
 
 
+def signin(request):
+    context = {}
+    if request.method == 'POST':
+        name_r = request.POST.get('name')
+        password_r = request.POST.get('password')
+        user = authenticate(request, username=name_r, password=password_r)
+        if user:
+            login(request, user)
+            
+            # username = request.session['username']
+            context["user"] = name_r
+            context["id"] = request.user.id
+            return render(request, 'myapp/success.html', context)
+            # return HttpResponseRedirect('success')
+        else:
+            context["error"] = "Invalid Credentials"
+            return render(request, 'myapp/signin.html', context)
+    else:
+        context["error"] = "Please Login to Proceed"
+        return render(request, 'myapp/signin.html', context)
