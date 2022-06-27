@@ -1,0 +1,64 @@
+{% extends 'myapp/base.html' %}
+{% block content %}
+<h3>{{msg}}</h3>
+<h2>Available Buses</h2>
+<table class="table table-striped" >
+    <thead style="background-color: blue;color: white;">
+    <td>ID</td>
+    <td>NAME</td>
+    <td>SOURCE</td>
+    <td>DESTINATION</td>
+    <td>NUM OF SEATS</td>
+    <td>NUM OF SEATS REM</td>
+    <td>PRICE</td>
+    <td>DATE</td>
+    <td>TIME</td>
+
+    </thead>
+
+    {% for row in bus_list %}
+    <tr>
+        <td>{{row.id }}</td>
+        <td>{{row.bus_name}}</td>
+        <td>{{row.source}}</td>
+        <td>{{row.dest}}</td>
+        <td>{{row.nos}}</td>
+        <td>{{row.rem}}</td>
+        <td>{{row.price}}</td>
+        <td>{{row.date}}</td>
+        <td>{{row.time}}</td>
+
+
+    </tr>
+    {% endfor %}
+</table>
+<div class="bookingform mx-5 " style="margin:0 auto; align-content: center;">
+    <form class="mx-5" action="{% url 'bookings' %}" method="post">
+        <h3>Book a Bus</h3>
+        {% csrf_token %}
+        <div class="col-auto">
+            <label for="example-email-input" class="col-2 col-form-label"> Enter Bus ID</label>
+            <div class="col-5">
+                <input name='bus_id' class="form-control" type="number" id="example-email-input">
+            </div>
+        </div>
+        <div class="col=auto">
+            <label for="example-email-input" class="col-2 col-form-label">Number of seats</label>
+            <div class="col-5">
+                <input name='no_seats' class="form-control" type="number">
+            </div>
+        </div>
+        <br>
+        <br>
+        <div class="pull-right text-center">
+            <button type="submit" class="btn btn-success float-left">Book</button>
+        </div>
+    
+    
+        {{error}}
+    
+    </form>
+</div>
+
+
+{% endblock %}
