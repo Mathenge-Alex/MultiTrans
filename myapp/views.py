@@ -108,3 +108,20 @@ def seebookings(request,new={}):
         return render(request, 'myapp/findbus.html', context)
 
 
+def signup(request):
+    context = {}
+    if request.method == 'POST':
+        name_r = request.POST.get('name')
+        email_r = request.POST.get('email')
+        password_r = request.POST.get('password')
+        user = User.objects.create_user(name_r, email_r, password_r, )
+        if user:
+            login(request, user)
+            return render(request, 'myapp/thank.html')
+        else:
+            context["error"] = "Invalid Credentials"
+            return render(request, 'myapp/signup.html', context)
+    else:
+        return render(request, 'myapp/signup.html', context)
+
+
