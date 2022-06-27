@@ -94,3 +94,17 @@ def cancellings(request):
             return render(request, 'myapp/error.html', context)
     else:
         return render(request, 'myapp/findbus.html')
+
+
+@login_required(login_url='signin')
+def seebookings(request,new={}):
+    context = {}
+    id_r = request.user.id
+    book_list = Book.objects.filter(userid=id_r)
+    if book_list:
+        return render(request, 'myapp/booklist.html', locals())
+    else:
+        context["error"] = "Sorry, you have not booked any bus currently"
+        return render(request, 'myapp/findbus.html', context)
+
+
