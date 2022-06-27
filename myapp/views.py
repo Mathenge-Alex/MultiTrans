@@ -73,3 +73,24 @@ def bookings(request):
         return render(request, 'myapp/findbus.html')
 
 
+@login_required(login_url='signin')
+def cancellings(request):
+    context = {}
+    if request.method == 'POST':
+        id_r = request.POST.get('bus_id')
+        #seats_r = int(request.POST.get('no_seats'))
+
+        try:
+            book = Book.objects.get(id=id_r)
+            bus = Bus.objects.get(id=book.busid)
+            rem_r = bus.rem + book.nos
+            Bus.objects.filter(id=book.busid).update(rem=rem_r)
+            #nos_r = book.nos - seats_r
+            Book.objects.filter(id=id_r).update(status='CANCELLED')
+            Book.objects.filter(id=id_r).update(nos=0)
+            return redirect(seebookings)
+        except Book.DoesNotExist:
+            context["error"] = "Oops, You had not booked that bus. Kindly confirm with your bookings"
+            return render(request, 'myapp/error.html', context)
+    else:
+        return render(request, 'myapp/findbus.html')
