@@ -153,3 +153,8 @@ def signout(request):
     context['error'] = "You have successfully logged out"
     return render(request, 'myapp/signin.html', context)
 
+
+def success(request):
+    context = {}
+    context['user'] = request.user
+    return render(request, 'myapp/success.html', context)
